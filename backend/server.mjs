@@ -6,7 +6,6 @@ import { on } from "events";
 const app = express();
 const port = 3000;
 app.use(cors());
-app.use(express.json()); //woeking wuth the content-type added
 
 const messages = [
 	{
