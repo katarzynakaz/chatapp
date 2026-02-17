@@ -4,7 +4,9 @@ import { on } from "events";
 // import { text } from "body-parser"; issue with this so replaced with express
 
 const app = express();
-const port = 3000;
+// const port = 3000;
+// because server was not working
+const port = process.env.PORT || 3000;
 app.use(cors());
 
 const messages = [
