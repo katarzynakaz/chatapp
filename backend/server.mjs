@@ -6,7 +6,7 @@ import { on } from "events";
 const app = express();
 const port = 3000;
 app.use(cors());
-// app.use(express.json());
+app.use(express.json()); //woeking wuth the content-type added
 
 const messages = [
 	{
@@ -102,17 +102,7 @@ app.post("/", (req, res) => {
 			return;
 		}
 		//here add the checks on backedn 400
-		// // from fe
-		// const newQuoteText = addQuoteText.value.trim().replace(/[^a-zA-Z0-9,.;:?! ]/g, "");
-		// const newQuoteAuthor = addQuoteAuthor.value.trim().replace(/[^a-zA-Z0-9,.;:?! ]/g, "");
-		//   if (!newQuoteText|| !newQuoteAuthor) {
-		//     confirmToUser.innerHTML = "Please add a quote and an author.";
-		//     return;
-		// }
-		// if (newQuoteText.length > 250 || newQuoteAuthor.length > 40) {
-		//     confirmToUser.innerHTML = "Quote must be up to 250 chars and author must be less than 40 chars.";
-		//     return;
-		// }
+
 		body.msgText = body.msgText.trim().replace(/[^a-zA-Z0-9,.;:?! ]/g, "");
 		body.username = body.username.trim().replace(/[^a-zA-Z0-9,.;:?! ]/g, "");
 
