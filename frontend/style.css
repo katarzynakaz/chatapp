@@ -1,96 +1,100 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&display=swap");
 
 html {
-  background-color: aliceblue;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: 'Roboto Mono', monospace;
+	background-color: aliceblue;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-family: "Roboto Mono", monospace;
 }
 
 .container {
-  background-color: #f9fffeaa;
-  padding: 1rem;
-  border-radius: 0.2rem;
-  border: solid 1px #adadad;
-  box-shadow: 0px 0px 1px #b1b1b8;
-  margin-top: 2rem;
-  max-width: 1000px;
-  min-width: 600px;
+	background-color: #f9fffeaa;
+	padding: 1rem;
+	border-radius: 0.2rem;
+	border: solid 1px #adadad;
+	box-shadow: 0px 0px 1px #b1b1b8;
+	margin-top: 2rem;
+	max-width: 1000px;
+	min-width: 600px;
 }
 
-.div-for-each-msg{
-  display: flex;
-  flex-direction: column;
-  border-bottom: solid 1px #adadad;
+.div-for-each-msg {
+	display: flex;
+	flex-direction: column;
+	border-bottom: solid 1px #adadad;
 }
 
 .msg-in-chat-view {
-  font-size: 1rem;
-  color: #4a4a4a;
-  font-weight: 400;
+	font-size: 1rem;
+	color: #4a4a4a;
+	font-weight: 400;
 }
 
 .username-in-chat-view {
-  font-size: 1rem;
-  color: #4a4a4a;
-  font-weight: 200;
+	font-size: 1rem;
+	color: #4a4a4a;
+	font-weight: 200;
+}
+
+.timestamp {
+	font-size: 0.75rem;
+	color: #4a4a4a;
+	font-weight: 200;
 }
 
 .add-message {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  margin-top: 1rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+	margin-top: 1rem;
 }
 
-#greeting, h2 {
-  font-size: 1.75rem;
-  color: #4a4a4a;
-  font-weight: 400;
-  border-bottom: solid 2px #adadad;
+#greeting,
+h2 {
+	font-size: 1.75rem;
+	color: #4a4a4a;
+	font-weight: 400;
+	border-bottom: solid 2px #adadad;
 }
 
 h2 {
-  font-size: 1.25rem;
+	font-size: 1.25rem;
 }
 
 button {
-  background-color: #6299f8;
-  color: rgb(34, 34, 34);
-  padding: 10px 20px;
-  border-radius: 0.2rem;
-  font-size: 1rem;
-  cursor: pointer;
-  font-weight: 500;
-  margin-top: 1rem;
-  font-family: 'Roboto Mono', monospace;
-
+	background-color: #6299f8;
+	color: rgb(34, 34, 34);
+	padding: 10px 20px;
+	border-radius: 0.2rem;
+	font-size: 1rem;
+	cursor: pointer;
+	font-weight: 500;
+	margin-top: 1rem;
+	font-family: "Roboto Mono", monospace;
 }
 
-#refresh-btn {
-  background-color: white;
-  border: solid 1px #5f5f5f;
-    font-family: 'Roboto Mono', monospace;
-
+.secondary-btn {
+	background-color: white;
+	border: solid 1px #5f5f5f;
+	font-family: "Roboto Mono", monospace;
 }
 
 button:hover {
-  background-color: #6299f844;
-  font-weight: 600;
+	background-color: #6299f844;
+	font-weight: 600;
 }
 
 .input {
-    padding: 10px;
-    border-radius: 0.2rem;
-    border: solid 1px #75758d;
-    font-size: 1rem;
+	padding: 10px;
+	border-radius: 0.2rem;
+	border: solid 1px #75758d;
+	font-size: 1rem;
 }
 
 #add-msg-text {
-  vertical-align: top;
-  min-height: 100px;
- 
-  line-height: 1.4;
-  
+	vertical-align: top;
+	min-height: 100px;
+
+	line-height: 1.4;
 }

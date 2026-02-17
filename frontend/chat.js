@@ -11,7 +11,7 @@ const addMsgUsernameInput = document.getElementById("add-msg-username");
 const addMsgTextInput = document.getElementById("add-msg-text");
 const confirmToUser = document.getElementById("confirm-to-user");
 
-const url = "http://localhost:3000/";
+const url = "http://localhost:3000";
 
 // generatequote and show to user
 const seeAllMessages = async () => {
@@ -58,33 +58,6 @@ const sendMsg = async () => {
 			"Message must be up to 400 chars and username must be less than 40 chars.";
 		return;
 	}
-
-	//bacekedn here
-	// app.post("/", (req, res) => {
-	// const bodyBytes = [];
-	// req.on("data", chunk => bodyBytes.push(...chunk));
-	// req.on("end", () => {
-	//     const bodyString = String.fromCharCode(...bodyBytes);
-	//     let body;
-	//     try {
-	//     body = JSON.parse(bodyString);
-	//     } catch (error) {
-	//     console.error(`Failed to parse body ${bodyString} as JSON: ${error}`);
-	//     res.status(400).send("Expected body to be JSON.");
-	//     return;
-	//     }
-	//     if (typeof body != "object" || !("quote" in body) || !("author" in body)) {
-	//     console.error(`Failed to extract quote and author from post body: ${bodyString}`);
-	//     res.status(400).send("Expected body to be a JSON object containing keys quote and author.");
-	//     return;
-	//     }
-	//     quotes.push({
-	//     quote: body.quote,
-	//     author: body.author,
-	//     });
-	//     res.send("ok");
-	// });
-	// });
 
 	// so macthes backend (typeof body != "object" || !("quote" in body) || !("author" in body))
 	const addingMsg = {
@@ -136,20 +109,6 @@ sendBtn.addEventListener("click", sendMsg);
 //     setTimeout(keepFetchingMessages, 100);
 // }
 
-//got bugs with id and went back to coursweork timestamp
-// const keepFetchingMessages = async () => {
-//     const lastSeenId = messages.length > 0 ? messages[messages.length - 1].id : null;
-//     const queryString = lastSeenId ? `?since=${lastSeenId}` : "";
-//     const server = url
-//     const urlofserv = `${server}messages${queryString}`;
-//     const rawResponse = await fetch(urlofserv);
-//     const response = await rawResponse.json();
-//     messages.push(...response);
-//     // render();
-//     seeAllMessages();
-//     setTimeout(keepFetchingMessages, 100);
-// }
-
 let messages = [];
 const state = { messages: [] };
 
@@ -172,7 +131,7 @@ const keepFetchingMessages = async () => {
 			? state.messages[state.messages.length - 1].timestamp
 			: null;
 	const queryString = lastMessageTime ? `?since=${lastMessageTime}` : "";
-	const urlQueryMod = `${url}messages${queryString}`;
+	const urlQueryMod = `${url}/messages${queryString}`;
 	const rawResponse = await fetch(urlQueryMod);
 	const response = await rawResponse.json();
 	state.messages.push(...response);
@@ -186,17 +145,35 @@ pollBtn.addEventListener("click", keepFetchingMessages);
 const longPollBtn = document.getElementById("long-poll-btn");
 
 const testLongPoll = async () => {
-	console.log("long poll btn");
-
 	const lastMessageTime =
 		state.messages.length > 0
 			? state.messages[state.messages.length - 1].timestamp
 			: null;
 	const queryString = lastMessageTime ? `?since=${lastMessageTime}` : "";
-	const urlQueryMod = `${url}long-poll${queryString}`;
+	const urlQueryMod = `${url}/long-poll${queryString}`;
 	const rawResponse = await fetch(urlQueryMod);
 	const response = await rawResponse.json();
 	state.messages.push(...response);
 	render();
+	testLongPoll();
 };
 longPollBtn.addEventListener("click", testLongPoll);
+
+//addiitonal privacy feature hide messages
+const hideMessages = document.getElementById("hide-btn");
+
+hideMessages.addEventListener("click", () => {
+	if (chatFeedDiv.style.display === "none") {
+		chatFeedDiv.style.display = "block";
+		hideMessages.textContent = "Hide chat";
+	} else {
+		chatFeedDiv.style.display = "none";
+		hideMessages.textContent = "Show chat";
+	}
+});
+
+// seeAllMessages();
+// but with long poll
+seeAllMessages().then(() => {
+	testLongPoll();
+});
