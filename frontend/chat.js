@@ -12,7 +12,7 @@ const addMsgTextInput = document.getElementById("add-msg-text");
 const confirmToUser = document.getElementById("confirm-to-user");
 
 // const url = "http://localhost:3000";
-const url = "https://katchatapp.hosting.codeyourfuture.io";
+const url = "https://katkazchatapp.hosting.codeyourfuture.io";
 
 // generatequote and show to user
 const seeAllMessages = async () => {
