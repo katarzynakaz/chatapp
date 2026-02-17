@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quote generator</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    
+    <div id="container">
+      <h1 id="greeting">Check out your quote of the day</h1>
+      <p id="quote"></p>
+      <p id="author"></p>
+      <button type="button" id="new-quote">New quote</button>
+    </div>
+
+    <div id="container add-quote">
+       <h2>Add a New Quote</h2>
+      <input class= "input" type="text" id="add-quote-text" placeholder="Add your quote" required>
+      <input class= "input" type="text" id="add-quote-author" placeholder="Add the author" required>
+      <button type="button" id="add-quote">Add quote</button>
+      <p id="confirm-to-user"></p>
+    </div>
+
+    <script src="quotes.js"></script>
+  </body>
+</html>
