@@ -20,6 +20,8 @@ const seeAllMessages = async () => {
 	const response = await fetch(url);
 	const allMessages = await response.json();
 
+	//this fixes the messages not showing on live sitwe
+	state.messages = allMessages;
 	// quote.innerHTML = selectedQuote.quote;
 	// author.innerHTML = selectedQuote.author;
 	// change greetingi am keeping everythign as is and jusy want to
