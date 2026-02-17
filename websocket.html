@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Tremendous Chat</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<div class="container">
+			<h1 id="greeting">Chat feed</h1>
+			<div id="chat-feed">
+				<div class="div-for-each-msg">
+					<p class="msg-text-in-chat-view"></p>
+					<p class="username-in-chat-view"></p>
+				</div>
+			</div>
+			<button type="button" class="secondary-btn" id="refresh-btn">
+				Get latest messages
+			</button>
+			<button type="button" class="secondary-btn" id="hide-btn">Hide messages</btn>
+		</div>
+
+		<div class="container add-message">
+			<h2>Send a message</h2>
+			<input
+				class="input"
+				type="text"
+				id="add-msg-text"
+				placeholder="Add your message"
+				required
+			/>
+			<input
+				class="input"
+				type="text"
+				id="add-msg-username"
+				placeholder="Add the username"
+				required
+			/>
+			<button type="button" id="send-msg-btn">Send</button>
+			<p id="confirm-to-user"></p>
+		</div>
+
+		<button type="button" class="secondary-btn" id="poll-btn">Poll btn</button>
+		<button type="button" class="secondary-btn" id="long-poll-btn">
+			Long poll btn
+		</button>
+
+		<!-- <script src="chat.js"></script>
+		  -->
+		<script src="websocket.js"></script>
+	</body>
+</html>
