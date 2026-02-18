@@ -7,7 +7,7 @@
 		<link rel="stylesheet" href="style.css" />
 	</head>
 	<body>
-		<div class="container">
+		<div class="container to-hide">
 			<h1 id="greeting">Chat feed</h1>
 			<div id="chat-feed">
 				<div class="div-for-each-msg">
@@ -19,6 +19,7 @@
 				Get latest messages
 			</button>
 			<button type="button" class="secondary-btn" id="hide-btn">Hide messages</btn>
+			<button style="opacity: 0" type="button" class="secondary-btn" id="test-ws">Test websocket</btn>
 		</div>
 
 		<div class="container add-message">
@@ -46,6 +47,7 @@
 			Long poll btn
 		</button>
 
-		<script src="chat.js"></script>
+		<!-- <script src="chat.js"></script> -->
+		<script src="websocket.js"></script>
 	</body>
 </html>

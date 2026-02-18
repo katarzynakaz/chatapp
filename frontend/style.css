@@ -98,3 +98,19 @@ button:hover {
 
 	line-height: 1.4;
 }
+
+.likedislike-div {
+	display: flex;
+	flex-direction: row;
+	gap: 0.75rem;
+	margin-bottom: 1rem;
+}
+
+.likes-count,
+.dislikes-count,
+.like-btn,
+.dislike-btn {
+	font-size: 0.75rem;
+	color: #4a4a4a;
+	margin-top: 0.5rem;
+}
