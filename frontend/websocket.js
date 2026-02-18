@@ -143,12 +143,12 @@ function render() {
             <div class="div-for-each-msg" data-id="${msg.id}">
                 <p class="msg-in-chat-view">${msg.msgText}</p>
                 <p class="username-in-chat-view">${msg.username}</p>
-				<div class="likedislike-div">
-					<button class="like-btn">Like</button>
-					<p class="likes-count">Liked ${msg.likesCount}</p>
-					<button class="dislike-btn">Dislike</button>
-					<p class="dislikes-count">Disliked ${msg.dislikesCount}</p>
-				</div>
+                <div class="likedislike-div">
+                    <button class="like-btn">Like</button>
+                    <p class="likes-count">Liked ${msg.likesCount}</p>
+                    <button class="dislike-btn">Dislike</button>
+                    <p class="dislikes-count">Disliked ${msg.dislikesCount}</p>
+                </div>
             </div>`;
 	});
 
@@ -156,106 +156,80 @@ function render() {
 	const likeBtn = document.querySelectorAll(".like-btn");
 	const dislikeBtn = document.querySelectorAll(".dislike-btn");
 
-	// likesCount.forEach((like) => {
-		
-	// sfrom backedn - implement id and like it was in the adding msg 
-	// const addingMsg = {
-	// 	msgText: addMsgText,
-	// 	username: addMsgUsername,
-	// };
-	// here getting object 
-	
- 
-	// const responseFromAdd = await fetch(url, {
-	// 	method: "POST",
-	// 	headers: {
-	// 		//so backedn can parde body as json
-	// 		"Content-Type": "application/json",
-	// 	},
-	// 	//turn obj into str typeof body != "object"
-	// 	body: JSON.stringify(addingMsg),
-	// });
-		//grab message by index
-		const message = state.messages[index]
-		   
-		const votingData = {
-    		id: message.id,
-    		vote: "like"
-    	};
-		
-		const responseFromVote = await fetch(`${url}/vote`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(votingData),
-    });
+	// find all buttons so all are ijn array
+	likeBtn.forEach((btn, index) => {
+		btn.addEventListener("click", async () => {
+			// likesCount.forEach((like) => {
 
-	if (responseFromVote.ok === true) {
-        console.log("Vote sent successfully");
-    } else {
-		console.log("Vote failed");
-	    }
+			// sfrom backedn - implement id and like it was in the adding msg
+			// const addingMsg = {
+			//  msgText: addMsgText,
+			//  username: addMsgUsername,
+			// };
+			// here getting object
 
+			// const responseFromAdd = await fetch(url, {
+			//  method: "POST",
+			//  headers: {
+			//      //so backedn can parde body as json
+			//      "Content-Type": "application/json",
+			//  },
+			//  //turn obj into str typeof body != "object"
+			//  body: JSON.stringify(addingMsg),
+			// });
+
+			//grab message by index
+			const message = state.messages[index];
+
+			const votingData = {
+				id: message.id,
+				vote: "like",
+			};
+
+			const responseFromVote = await fetch(`${url}/vote`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(votingData),
+			});
+
+			if (responseFromVote.ok === true) {
+				console.log("Vote sent successfully");
+			} else {
+				console.log("Vote failed");
+			}
+		});
 	});
 
-	//same for dislkieke 
+	//dislieke
 	dislikeBtn.forEach((btn, index) =>
-        btn.addEventListener("click", async (event) => {
-            console.log("Dislike button clicked");
+		btn.addEventListener("click", async (event) => {
+			console.log("Dislike button clicked");
 
-            // A. Get the message
-            const message = state.messages[index];
+			const message = state.messages[index];
 
-            // B. Create the data object
-            const votingData = {
-                id: message.id,
-                vote: "dislike" // <--- Only difference is here
-            };
+			const votingData = {
+				id: message.id,
+				vote: "dislike",
+			};
 
-            // C. Fetch
-            const responseFromVote = await fetch(`${url}/vote`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(votingData),
-            });
+			const responseFromVote = await fetch(`${url}/vote`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(votingData),
+			});
 
-            // D. Check
-            if (responseFromVote.ok === true) {
-                console.log("Vote sent successfully");
-            } else {
-                console.log("Vote failed");
-            }
-        })
-    );
+			if (responseFromVote.ok === true) {
+				console.log("Vote sent successfully");
+			} else {
+				console.log("Vote failed");
+			}
+		})
+	);
 }
-
-
-	// const likesCount = document.querySelectorAll(".likes-count");
-	// const dislikesCount = document.querySelectorAll(".dislikes-count");
-
-	
-	// dislikesCount.forEach((dislike) => {
-	// 	console.log("Dislikes count: ", dislike.textContent);
-	// });
-
-	
-
-	// likeBtn.forEach((btn) => {
-	// 	btn.addEventListener("click", (event) => {
-	// 		console.log("Like button clicked");
-	// 	});
-	// });
-
-	// dislikeBtn.forEach((btn) =>
-	// 	btn.addEventListener("click", (event) => {
-	// 		console.log("Dislike button clicked");
-	// 	})
-	// );
-
-
 
 //polling coursework
 const keepFetchingMessages = async () => {
@@ -286,7 +260,38 @@ const testLongPoll = async () => {
 	const urlQueryMod = `${url}/long-poll${queryString}`;
 	const rawResponse = await fetch(urlQueryMod);
 	const response = await rawResponse.json();
-	state.messages.push(...response);
+
+	//websocket but with duplicated message when liked
+	//check by id of each message if already rendered state
+	// so need to do a check before remove this:
+	// state.messages.push(...response);
+
+	response.forEach((incomingMsgFromServer) => {
+		// inside old messages  on screen msgAlreadyOnScreen
+		const isDuplicate = state.messages.some(
+			(msgAlreadyOnScreen) => msgAlreadyOnScreen.id === incomingMsgFromServer.id
+		);
+
+		if (!isDuplicate) {
+			// non duplicated add it to the list
+			// instead of all getting pushed after check
+			// state.messages.push(...response)
+			// or incomingMsgFromServer);
+			state.messages.push(...response);
+			// if duplicate - loop to increase count
+		} else {
+			// if on screen show new count shown
+			state.messages.forEach((msgOnScreen) => {
+				if (msgOnScreen.id === incomingMsgFromServer.id) {
+					//show new count
+					msgOnScreen.likesCount = incomingMsgFromServer.likesCount;
+					msgOnScreen.dislikesCount = incomingMsgFromServer.dislikesCount;
+					msgOnScreen.timestamp = incomingMsgFromServer.timestamp;
+				}
+			});
+		}
+	});
+
 	render();
 	testLongPoll();
 };
