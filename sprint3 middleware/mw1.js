@@ -4,11 +4,12 @@
 // The response should look like:
 
 const express = require("express");
-const cors = require("cors");
+// const cors = require("cors");
 
 const app = express();
-app.use(express.json()); //undeined was passed
-app.use(cors());
+app.use(express());
+
+// app.use(cors());
 
 //helpers middleware functions
 // A middleware should look for a header with name X-Username.
@@ -39,10 +40,22 @@ const addUsernameProp = function (req, res, next) {
 	next();
 };
 
+//to turn to obj
+const getBody = function (req, res, next) {
+	let data = "";
+	req.on("data", (chunk) => {
+		data += chunk;
+	});
+	req.on("end", () => {
+		req.body = JSON.parse(data);
+		next();
+	});
+};
 // A middleware should parse the request POST body as a JSON array. It should modify req to add a body property to this value.
 // If the POST body was not a JSON array, or the array contains non-string elements, it should reject the request.
 const parseBody = function (req, res, next) {
 	const body = req.body;
+	getBody();
 	//check if is array and all strings typeof wrong for array
 	if (!Array.isArray(body)) {
 		return res.send("Not an array");
