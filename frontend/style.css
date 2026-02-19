@@ -114,3 +114,8 @@ button:hover {
 	color: #4a4a4a;
 	margin-top: 0.5rem;
 }
+
+.like-btn,
+.dislike-btn {
+	background-color: white;
+}
