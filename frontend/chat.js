@@ -6,25 +6,15 @@ const usernameInChat = document.querySelector(".username-in-chat-view");
 const refreshBtn = document.getElementById("refresh-btn");
 const sendBtn = document.getElementById("send-msg-btn");
 const pollBtn = document.getElementById("poll-btn");
-const testWsBtn = document.getElementById("test-ws");
 
 const addMsgUsernameInput = document.getElementById("add-msg-username");
 const addMsgTextInput = document.getElementById("add-msg-text");
 const confirmToUser = document.getElementById("confirm-to-user");
 
 const url = "http://localhost:3000";
+// const url = "https://katchatapp.hosting.codeyourfuture.io";
 
-const socket = new WebSocket("ws://localhost:3000");
-// live url // const url = "https://katchatapp.hosting.codeyourfuture.io";
-
-socket.onmessage = ({ data }) => {
-	console.log("Message from server ", data);
-};
-
-testWsBtn.addEventListener("click", () => {
-	socket.send("Hello from client!");
-});
-
+// generatequote and show to user
 const seeAllMessages = async () => {
 	const response = await fetch(url);
 	const allMessages = await response.json();
@@ -46,12 +36,12 @@ const sendMsg = async () => {
 		.toUpperCase();
 
 	if (!addMsgText || !addMsgUsername) {
-		confirmToUser.textContent = "Please add message text and your username.";
+		confirmToUser.innerHTML = "Please add message text and your username.";
 		return;
 	}
 
 	if (addMsgText.length > 400 || addMsgUsername.length > 40) {
-		confirmToUser.textContent =
+		confirmToUser.innerHTML =
 			"Message must be up to 400 chars and username must be less than 40 chars.";
 		return;
 	}
@@ -66,23 +56,27 @@ const sendMsg = async () => {
 		headers: {
 			"Content-Type": "application/json",
 		},
+		//turn obj into str typeof body != "object"
 		body: JSON.stringify(addingMsg),
 	});
 
 	if (responseFromAdd.ok === true) {
-		confirmToUser.textContent = "Your message has been sent.";
+		confirmToUser.innerHTML = "Your message has been sent.";
 
 		addMsgTextInput.value = "";
 		addMsgUsernameInput.value = "";
 	} else {
 		const errorToShow = await responseFromAdd.text();
-		confirmToUser.textContent = `${errorToShow} Please try again.`;
+		confirmToUser.innerHTML = `${errorToShow} Please try again.`;
 	}
 };
 
 sendBtn.addEventListener("click", sendMsg);
 
+// let messages = [];
 const state = { messages: [] };
+
+//corrected event listener - div not buttons
 chatFeedDiv.addEventListener("click", async (event) => {
 	const isLike = event.target.classList.contains("like-btn");
 	const isDislike = event.target.classList.contains("dislike-btn");
@@ -90,7 +84,7 @@ chatFeedDiv.addEventListener("click", async (event) => {
 	if (!isLike && !isDislike) return;
 
 	const msgDiv = event.target.closest(".div-for-each-msg");
-	const messageId = msgDiv.dataset.id;
+	const messageId = parseInt(msgDiv.dataset.id);
 	const voteType = isLike ? "like" : "dislike";
 
 	const response = await fetch(`${url}/vote`, {
@@ -104,7 +98,7 @@ chatFeedDiv.addEventListener("click", async (event) => {
 	}
 });
 
-//WS UPDATE render with added likes and dislikes and by id
+//updated render function innerHTML not secre for inputs
 function render() {
 	chatFeedDiv.innerHTML = "";
 	state.messages.forEach((msg) => {
@@ -135,7 +129,7 @@ function render() {
 	});
 }
 
-//polling coursework
+//polling coursework - this has the old implementation of since TODO
 const keepFetchingMessages = async () => {
 	const lastMessageTime =
 		state.messages.length > 0
@@ -150,9 +144,8 @@ const keepFetchingMessages = async () => {
 	setTimeout(keepFetchingMessages, 100);
 };
 
-pollBtn.addEventListener("click", keepFetchingMessages);
-
 //test long poll
+pollBtn.addEventListener("click", keepFetchingMessages);
 const longPollBtn = document.getElementById("long-poll-btn");
 
 const testLongPoll = async () => {
@@ -188,7 +181,7 @@ const testLongPoll = async () => {
 };
 longPollBtn.addEventListener("click", testLongPoll);
 
-//addiitonal privacy feature hide messages from screen
+//privacy feature to hide messages
 const hideMessages = document.getElementById("hide-btn");
 
 hideMessages.addEventListener("click", () => {
@@ -201,7 +194,7 @@ hideMessages.addEventListener("click", () => {
 	}
 });
 
-// seeAllMessages(); with long poll:
+// seeAllMessages(); with long poll
 seeAllMessages().then(() => {
 	testLongPoll();
 });

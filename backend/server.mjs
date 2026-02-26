@@ -1,35 +1,17 @@
-//imports
 import express from "express";
 import cors from "cors";
+import { on } from "events";
 
 const app = express();
+const port = process.env.PORT || 3000;
 
-// following coursework
-import { server as WebSocketServer } from "websocket";
-
-import http from "http";
-
-const server = http.createServer(app);
-const webSocketServer = new WebSocketServer({ httpServer: server });
-
-const port = 3000;
 app.use(cors());
-
-webSocketServer.on("request", (request) => {
-	const connection = request.accept(null, request.origin);
-
-	connection.sendUTF("Hello from server");
-
-	connection.on("message", (message) => {
-		console.log("Msg from client", message.utf8Data);
-	});
-});
 
 const messages = [
 	{
 		id: 1,
 		username: "Kaska",
-		msgText: "Hey people, how are you doing?",
+		msgText: "Hey guys!",
 		timestamp: Date.now(),
 		likesCount: 0,
 		dislikesCount: 0,
@@ -38,6 +20,7 @@ const messages = [
 
 let globalIdCounter = 2;
 
+//helper to filter recent messages
 const getRecentMessages = (sinceTime) => {
 	const since = parseInt(sinceTime);
 	if (since) {
@@ -58,6 +41,7 @@ app.get("/messages", (req, res) => {
 
 //messages with long polling only
 const callbacksForNewMessages = [];
+
 app.get("/long-poll", (req, res) => {
 	let messagesToSend = [];
 
@@ -72,6 +56,7 @@ app.get("/long-poll", (req, res) => {
 	}
 });
 
+//add msg to chat
 app.post("/", (req, res) => {
 	const bodyBytes = [];
 	req.on("data", (chunk) => bodyBytes.push(...chunk));
@@ -100,6 +85,7 @@ app.post("/", (req, res) => {
 				);
 			return;
 		}
+		//here add the checks on backedn 400
 
 		body.msgText = body.msgText.trim().replace(/[^a-zA-Z0-9,.;:?! ]/g, "");
 		body.username = body.username.trim().replace(/[^a-zA-Z0-9,.;:?! ]/g, "");
@@ -109,7 +95,7 @@ app.post("/", (req, res) => {
 			return;
 		}
 
-		if (body.msgText.length > 400 || body.username.length >= 40) {
+		if (body.msgText.length > 400 || body.username.length > 40) {
 			res
 				.status(400)
 				.send(
@@ -120,12 +106,12 @@ app.post("/", (req, res) => {
 
 		const newId = globalIdCounter++;
 
+		//newMessage obnj to send to long poll so instead of above
 		const newMessage = {
 			id: newId,
 			msgText: body.msgText,
 			username: body.username,
 			timestamp: Date.now(),
-			//updated initialised
 			likesCount: 0,
 			dislikesCount: 0,
 		};
@@ -202,9 +188,6 @@ app.post("/vote", (req, res) => {
 	});
 });
 
-// this was not working with websocket so the first line is changed to server listening
-// app.listen(port, () => {
-
-server.listen(port, () => {
-	console.log(`Server running at http://localhost:${port}`);
+app.listen(port, () => {
+	console.error(`Chat server listening on port ${port}`);
 });
