@@ -36,13 +36,13 @@ const sendMsg = async () => {
 		.toUpperCase();
 
 	if (!addMsgText || !addMsgUsername) {
-		confirmToUser.innerHTML = "Please add message text and your username.";
+		confirmToUser.textContent = "Please add message text and your username.";
 		return;
 	}
 
 	if (addMsgText.length > 400 || addMsgUsername.length > 40) {
-		confirmToUser.innerHTML =
-			"Message must be up to 400 chars and username must be less than 40 chars.";
+		confirmToUser.textContent =
+			"Message must be up to 400 chars and username must be up to 40 chars.";
 		return;
 	}
 
@@ -60,14 +60,15 @@ const sendMsg = async () => {
 		body: JSON.stringify(addingMsg),
 	});
 
+	//innerHTML
 	if (responseFromAdd.ok === true) {
-		confirmToUser.innerHTML = "Your message has been sent.";
+		confirmToUser.textContent = "Your message has been sent.";
 
 		addMsgTextInput.value = "";
 		addMsgUsernameInput.value = "";
 	} else {
 		const errorToShow = await responseFromAdd.text();
-		confirmToUser.innerHTML = `${errorToShow} Please try again.`;
+		confirmToUser.textContent = `${errorToShow} Please try again.`;
 	}
 };
 
@@ -97,7 +98,8 @@ chatFeedDiv.addEventListener("click", async (event) => {
 	}
 });
 
-//updated render function innerHTML not secre for inputs
+//updated render function - to prevent injection attack
+// on error msg or user input textContent instead of innerHTML
 function render() {
 	chatFeedDiv.innerHTML = "";
 	state.messages.forEach((msg) => {
@@ -128,7 +130,7 @@ function render() {
 	});
 }
 
-//polling coursework - this has the old implementation of since TODO
+//polling
 const keepFetchingMessages = async () => {
 	const lastMessageTime =
 		state.messages.length > 0
