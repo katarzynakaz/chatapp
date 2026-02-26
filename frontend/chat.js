@@ -11,8 +11,8 @@ const addMsgUsernameInput = document.getElementById("add-msg-username");
 const addMsgTextInput = document.getElementById("add-msg-text");
 const confirmToUser = document.getElementById("confirm-to-user");
 
-const url = "http://localhost:3000";
-// const url = "https://katchatapp.hosting.codeyourfuture.io";
+// const url = "http://localhost:3000";
+const url = "https://katchatapp.hosting.codeyourfuture.io";
 
 // generatequote and show to user
 const seeAllMessages = async () => {
@@ -73,7 +73,6 @@ const sendMsg = async () => {
 
 sendBtn.addEventListener("click", sendMsg);
 
-// let messages = [];
 const state = { messages: [] };
 
 //corrected event listener - div not buttons
